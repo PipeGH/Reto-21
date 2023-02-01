@@ -1,0 +1,161 @@
+<div class="container">
+  <div class="contenedor">
+    <div class="cabecera">
+        <div class="ver" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M208.08,0.00 C152.69,67.09 262.02,75.98 200.80,150.00 L0.00,150.00 L0.00,0.00 Z" style="stroke: none; fill: rgb(251, 255, 0);"></path></svg></div>
+        <h1 class="titulo">CREAR</h1>
+        <h1 class="titulo2">NOTICIAS</h1>
+    </div>
+    </div>
+    <H1 style="color: red;"><img src="https://img.icons8.com/plasticine/100/000000/box-important--v1.png" width="50"/>LA INFORMACION VISTA ACONTINUACION SE VERA REFLEJADA EN LA PAGINA PRINCIPAL<img src="https://img.icons8.com/plasticine/100/000000/box-important--v1.png" width="50"/></H1>
+    <div style="padding:.8em"><button data-bs-toggle="modal" data-bs-target="#createNotice" class="icon-btn add-btn">
+      <div class="add-icon"></div>
+      <div class="btn-txt">Agregar</div>
+    </button>
+    </div>
+  <div class="tabla">
+    <div class="centro">
+      <input type="text" class="buscar" placeholder="Buscar"  name="filtro" [(ngModel)]="filtro">
+</div>
+        <table class="table table-striped">
+          <thead class="thead-primary">
+            <tr>
+              <th>Titulo</th>
+              <th>descripcion</th>
+              <th>Autor</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+              <th><span style="color: transparent;">acciones</span></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let notice of listNotice | notice: filtro | paginate: { id: 'notice' , itemsPerPage: 10, currentPage: p }">
+              <td>{{notice.titulo}}</td>
+              <td>{{notice.descripcion}}...</td>
+              <td>{{notice.nombres + " " + notice.primer_apellido + " " + notice.segundo_apellido}}</td>
+              <td>{{notice.fecha_informacion.substring(0,10)}}</td>
+              <td>
+                <a class="ic"><img class="icono" (click)="selectOneNotice(notice.id_informacion)" data-bs-toggle="modal" data-bs-target="#updateNotice" src="https://img.icons8.com/ios-glyphs/30/undefined/edit--v1.png"/></a>
+              </td>
+              <td>
+                <a class="ic"><img class="icono" (click)="deleteNotice(notice.id_informacion)" src="https://img.icons8.com/ios-glyphs/30/undefined/filled-trash.png"/></a>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <pagination-controls id="notice" (pageChange)="handlePageChange($event)" previousLabel="Prev" nextLabel="Next"></pagination-controls>
+      </div>
+    </div>
+
+
+
+<!-- Button trigger modal -->
+<div class="modal fade" id="createNotice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Registrar Noticias</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeData()"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="noticeForm" (ngSubmit)="createNotice(noticeForm.value)">
+
+          <div class="mb-3">
+            <label for="" class="form-label">Título:</label>
+            <textarea class="form-control" name="" id="" rows="2" placeholder="Inserte el titulo:" formControlName="titulo"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="" class="form-label">Descripción de la noticia:</label>
+            <textarea class="form-control"  style="border-radius: 12px;"  id="" rows="12" placeholder="Inserte el contenido:" formControlName="descripcion"></textarea>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="" class="form-label">Imagen:</label>
+            <input type="file" class="form-control" accept="image/png" placeholder="" aria-describedby="fileHelpId" (change)="getImg($event)">
+            <div id="fileHelpId" class="form-text">En este aparado solo se aceptan imagenes en formato ".png"</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="" class="form-label">Imagen seleccionada:</label>
+            <img src="{{previewImg}}" class="img-fluid rounded-top" alt="">
+          </div>
+
+
+
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-warning">Registrar</button>
+          </div>
+        </form>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!------------- Modal para actualizar noticias ---------------->
+<div class="modal fade" id="updateNotice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar información</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeData()"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="noticeUpdateForm" (ngSubmit)="updateNotice(noticeUpdateForm.value)">
+            <div *ngFor="let one of oneNotice">
+              <input type="hidden" [(ngModel)]="one.id_informacion" formControlName="id_informacion">
+              <div class="mb-3">
+                <label for="" class="form-label">Título:</label>
+                <textarea class="form-control" name="" id="" rows="2" [(ngModel)]="one.titulo" formControlName="titulo"></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Descripción:</label>
+                <textarea style="border-radius: 12px;" class="form-control" name="" id="" rows="12" placeholder="Ingrese una descripción:" formControlName="descripcion" [(ngModel)]="one.descripcion"></textarea>
+              </div>
+
+            </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Imagen Actual:</label>
+                <img src="data:image/png;base64,{{imgAct}}" class="img-fluid rounded-top" alt="">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label"></label>
+                <input type="file" class="form-control" accept="image/png" placeholder="Seleccione una imagen para actualizar" aria-describedby="fileHelpId" (change)="getImgUpdate($event)">
+                <div id="fileHelpId" class="form-text">Unicamente se aceptan imagenes con extención ".png"</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Imagen seleccionada:</label>
+                <img src="{{previewImg}}" class="img-fluid rounded-top" alt="">
+              </div>
+
+
+
+
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-warning" data-bs-dismiss="modal" value="Actualizar">
+          </div>
+        </form>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+

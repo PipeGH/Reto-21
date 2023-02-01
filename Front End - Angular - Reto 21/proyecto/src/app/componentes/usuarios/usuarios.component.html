@@ -1,0 +1,377 @@
+
+<body>
+<div class="ver2">
+  <div class="contenedor">
+    <div class="cabecera">
+        <div class="ver" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M208.08,0.00 C152.69,67.09 262.02,75.98 200.80,150.00 L0.00,150.00 L0.00,0.00 Z" style="stroke: none; fill: rgb(251, 255, 0);"></path></svg></div>
+        <h1 class="titulo">USUARIOS</h1>
+        <h1 class="titulo2">RIOS</h1>
+    </div>
+    </div>
+
+<div class="container">
+
+  <button class="icon-btn add-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <div class="add-icon"></div>
+    <div class="btn-txt">Usuarios</div>
+</button>
+
+<button class="icon-btn2 add-btn2" data-bs-toggle="modal" data-bs-target="#nuevo">
+  <div class="add-icon2"></div>
+  <div class="btn-txt">Clientes</div>
+</button>
+
+<div class="centro">
+      <input type="text" class="buscar" placeholder="Buscar" [(ngModel)]="filtro" name="filtro">
+    </div>
+
+<div class="cont" >
+
+
+
+          <table  class="table table-striped" >
+            <thead>
+              <tr>
+                <th scope="col">Documento</th>
+                <th scope="col">Usuarios</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+                <th><span style="color: transparent;">acciones</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr scope="row" *ngFor="let Users of listaUsuarios | filtres: filtro | paginate: { id: 'users' , itemsPerPage: 10, currentPage: p } ">
+
+                        <td>{{Users.documento}}</td>
+                        <td>
+                          {{Users.nombres + " " + Users.primer_apellido + " " + Users.segundo_apellido}}
+                        </td>
+                        <td><a>{{Users.nombre_rol}}</a></td>
+                        <td> <span class="{{Users.nombre_cuenta}}"></span> </td>
+                        <td>
+                          <a class="ic"(click)="updateStateUser(Users.documento,Users.nombre_cuenta)"><img class="icono" src="https://img.icons8.com/ios-filled/50/1A1A1A/available-updates.png" width="30%"/></a>
+                        </td>
+                        <td>
+                          <a class="ic" data-bs-toggle="modal" data-bs-target="#ModalUpdate" (click)="actualizarUsuario(Users.documento)"><img class="icono" src="https://img.icons8.com/ios-glyphs/30/undefined/edit--v1.png"></a>
+                        </td>
+              </tr>
+
+
+            </tbody>
+          </table>
+
+    <pagination-controls id="users"
+    (pageChange)="handlePageChange($event)"
+    previousLabel="Prev"
+    nextLabel="Next"
+  ></pagination-controls>
+</div>
+
+</div>
+</div>
+
+
+<!------------------------- Modal de registrar Cliente ------------------------------->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding-top: -5rem;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-black" id="exampleModalLabel">Registrar usuarios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="usuariosForm" (ngSubmit)="registrarUsuarios(usuariosForm.value)">
+
+          <div class="row">
+
+
+            <div class="col"><!--Lado derecho-->
+
+              <div class="mb-3">
+                <label for="" class="form-label">Tipo de documento</label>
+
+                <select class="form-select" name="" id="" formControlName="id_documento">
+
+                    <option *ngFor="let document of listaDocumento; let iControl=index" value="{{document.id_documento}}"> {{document.nombre_tipo_documento}} </option>
+
+                </select>
+
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Documento de identidad</label>
+                <input type="number" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Número de documento" formControlName="documento">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Nombres</label>
+                <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Nombres" formControlName="nombres">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Primer Apellido</label>
+                <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Primer Apellido" formControlName="primer_apellido">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Segundo Apellido</label>
+                <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Segundo Apellido" formControlName="segundo_apellido">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Genero</label>
+                <select class="form-select" name="" id="" formControlName="genero">
+
+                  <option *ngFor="let gender of listaGender; let iControl=index"  value="{{gender.id_genero}}">{{gender.nombre_tipo_genero}}</option>
+
+                </select>
+              </div>
+
+
+
+            </div> <!--Aquí termina el lado derecho-->
+
+
+
+            <div class="col"><!--Lado izquierdo-->
+
+              <div class="mb-3">
+                <label for="" class="form-label">Correo Electronico</label>
+                <input type="email" class="form-control" name="" id="" aria-describedby="emailHelpId" placeholder="Correo electronico" formControlName="correo">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Telefono:</label>
+                <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Número de teléfono" formControlName="telefono">
+              </div>
+
+              <div class="mb-3">
+                <label for="" class="form-label">Tipo de usuario</label>
+                <select class="form-select" name="" id="" formControlName="rol">
+
+                  <option *ngFor="let rol of listaRol; let iControl=index" value="{{rol.id_rol}}"> {{rol.nombre_rol}} </option>
+
+                </select>
+              </div>
+
+
+
+            </div><!--Aquí termina el lado izquierdo-->
+
+
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="input" class="btn btn-warning text-white">Registrar</button>
+          </div>
+
+
+        </form>
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-----------------------   Modal para actualizar el usuario    -------------------------->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="ModalUpdate" tabindex="-1" aria-labelledby="modalUpdate" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Datos:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="updateUserForm" (ngSubmit)="updateUsers(updateUserForm.value)" >
+
+          <div *ngFor="let oneuser of oneUser">
+            <div class="row">
+            <div class="col">
+            <input type="hidden" formControlName="documento" [(ngModel)]="oneuser.documento">
+
+            <div class="mb-3">
+              <label for="" class="form-label">Nombres:</label>
+              <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" [(ngModel)]="oneuser.nombres" formControlName="nombres">
+            </div>
+
+            <div class="mb-3">
+              <label for="" class="form-label">Segundo Apellido:</label>
+              <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" [(ngModel)]="oneuser.segundo_apellido" formControlName="segundo_apellido">
+            </div>
+
+            <div class="mb-3">
+              <label for="" class="form-label">Telefono:</label>
+              <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" [(ngModel)]="oneuser.numero_telefono" formControlName="numero_telefono">
+            </div>
+
+          </div>
+
+          <div class="col">
+
+            <div class="mb-3">
+              <label for="" class="form-label">Primer Apellido:</label>
+              <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" [(ngModel)]="oneuser.primer_apellido" formControlName="primer_apellido">
+            </div>
+
+       
+
+            <div class="mb-3">
+              <label for="" class="form-label">Correo Electronico:</label>
+              <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" [(ngModel)]="oneuser.correo" formControlName="correo">
+            </div>
+
+            <div class="mb-3">
+              <label for="" class="form-label">Tipo de usuario</label>
+              <select class="form-select" name="" id="" formControlName="rol" [(ngModel)]="oneuser.rol">
+
+                <option *ngFor="let rol of listAllRoles; let index=index" [selected]="index == oneuser.rol" [value]="rol.id_rol"> {{rol.nombre_rol}} </option>
+
+              </select>
+            </div>
+          </div>
+          </div>
+        </div>
+          <div class="modal-footer">
+            <button type="submit" data-bs-dismiss="modal" class="btn btn-warning">Actualizar</button>
+          </div>
+
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="nuevo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Nuevos Datos Personales</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form [formGroup]="createNewUser" (ngSubmit)="createNewUsers(createNewUser.value)">
+
+            <div class="row">
+              <div class="col">
+                  <div class="mb-4 ">
+                    <label for="titulo" class="form-label ">Documento</label>
+                    <input type="text" class="form-control align-items-center" required="required" name="titulo" formControlName="documento">
+                  </div>
+                  <div class="mb-4">
+                    <label for="descripcion" class="form-label text-center">Nombres</label>
+                    <input type="text" class="form-control" required="required" name="descripcion" formControlName="nombres">
+                  </div>
+                  <div class="mb-4">
+                    <label for="descripcion" class="form-label text-center">Segundo Apellido</label>
+                    <input type="text" class="form-control" required="required" name="descripcion" formControlName="segundo_apellido">
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="descripcion" class="form-label text-center">Número de teléfono</label>
+                    <input type="text" class="form-control" required="required" name="descripcion" formControlName="numero_telefono">
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="descripcion" class="form-label text-center">Genero</label><br>
+                    <select  name="categoria"  class="form-select" id="categoria" formControlName="genero">
+                      <option selected value="0"> Seleccione </option>
+                      <option *ngFor="let gender of listaGender" value="{{gender.id_genero}}">{{gender.nombre_tipo_genero}}</option>
+                  </select>
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="descripcion" class="form-label text-center">Tipo de Valoración</label><br>
+                    <select  name="categoria"  class="form-select" id="categoria" formControlName="id_valoracion_tipo">
+                      <option selected value="0"> Seleccione </option>
+                      <option *ngFor="let type of listTypeAssessment" value="{{type.id_valoracion}}">{{type.nombre_valoracion}}</option>
+                  </select>
+                  </div>
+
+
+
+              </div>
+              <div class="col">
+                <div class="mb-4">
+                  <label for="descripcion" class="form-label text-center">Tipo de Documento</label>
+                  <select  name="categoria"  class="form-select" id="categoria" formControlName="tipo_de_documento">
+                    <option selected value="0"> Seleccione </option>
+                    <option *ngFor="let document of listaDocumento" value="{{document.id_documento}}">{{document.nombre_tipo_documento}}</option>
+                </select>
+                </div>
+                <div class="mb-4">
+                  <label for="descripcion" class="form-label text-center">Primer Apellido</label>
+                  <input type="text" class="form-control" required="required" name="descripcion" formControlName="primer_apellido" >
+                </div>
+                <div class="mb-4">
+                  <label for="descripcion" class="form-label text-center">Correo</label>
+                  <input type="email" class="form-control" required="required" name="descripcion" formControlName="correo">
+                </div>
+                <div class="mb-4">
+                  <label for="descripcion" class="form-label text-center">Fecha de Nacimiento</label>
+                  <input type="date" class="form-control align-items-center" required="required" name="titulo" formControlName="fecha_nacimiento" >
+                </div>
+
+                <div class="mb-4">
+                  <label for="descripcion" class="form-label text-center">Plan a contratar</label><br>
+                  <select  name="categoria"  class="form-select" id="categoria" formControlName="id_suscripcion_pago" (change)="changueDateFormat($event)">
+                    <option selected value="0"> Seleccione </option>
+                    <option *ngFor="let suscription of listSuscription" value="{{suscription.id_suscripcion}}">{{suscription.titulo_suscripcion}}</option>
+                </select>
+                </div>
+
+                <div class="mb-4">
+                  <label for="descripcion" class="form-label text-center">Fecha de finalización del plan</label>
+                  <input type="date" class="form-control align-items-center" required="required" name="titulo" formControlName="fecha_de_fin" [(ngModel)]="date_temp" readonly>
+                  <small id="helpId" class="form-text text-muted">La fecha de inicio se toma automaticamente del día actual.</small>
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-warning">Registrar</button>
+            </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+  
+</body>

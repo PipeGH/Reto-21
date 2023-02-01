@@ -1,0 +1,150 @@
+<body>
+  <div class="d-flex flex-column bg-black barra">
+    <!--*ngFor="let x of photo"--> 
+    <div class="imag" style="align-items: center;" *ngFor="let x of photo">
+      <img src="data:image/png;base64,{{arrayBufferToBase64(x.foto_personal.data)}}" class=" img rounded-circle">
+    </div>
+
+    <ul class="nav nav-pills nav-flush flex-column mb-auto  col-sm-4">
+     
+      <li>
+        <a href="#pageSubmenu" data-bs-toggle="collapse" aria-haspopup="true"  aria-expanded="false" class="nav-link py-3 text-center border-bottom " role="button"><small class="nombre"> {{nombre}} </small></a>
+        <ul class="collapse list-unstyled" id="pageSubmenu">
+          <li>
+              <a  class="nav-link py-3 border-bottom" routerLink="perfil"><img src="https://img.icons8.com/nolan/64/settings--v1.png" class="fa"/><small class="texto">Perfil</small></a>
+          </li>
+          
+          <li>
+            <a (click)="closeSession()" class="nav-link py-3 border-bottom" ><img src="https://img.icons8.com/nolan/64/shutdown.png" class="fa"/><small class="texto">Cerrar Sesión</small></a>
+        </li>
+ 
+        </ul>
+      </li>
+      <li> 
+        <a href="#menusu"data-bs-toggle="collapse" aria-haspopup="true"  aria-expanded="false" class="nav-link" role="button"><img src="https://img.icons8.com/nolan/64/test-account.png" class="fa"/><small class="texto">Usuarios</small> </a>
+        <ul class="collapse list-unstyled" id="menusu">
+            <li>
+             
+                <li>
+                    <a  class="nav-link py-3 border-bottom" routerLink="usuarios"><img src="https://img.icons8.com/nolan/64/contract-job.png" class="fa"/><small>Gestionar</small></a>
+                </li>
+                <li>
+                    <a  class="nav-link py-3 border-bottom" routerLink="assists"><img src="https://img.icons8.com/nolan/64/folder-invoices.png" class="fa"/><small>Asistencia</small></a>
+                </li>
+
+
+              </ul>
+	          </li>
+
+
+            <li>
+              <a href="#subMenuSistema" data-bs-toggle="collapse" aria-haspopup="true"  aria-expanded="false" class="nav-link" role="button"><img src="https://img.icons8.com/nolan/64/system-information.png" class="fa"/><small class="texto">Sistema</small></a>
+              <ul class="collapse list-unstyled" id="subMenuSistema">
+                <li>
+                    <a  class="nav-link py-3 border-bottom" routerLink="sistema"><img src="https://img.icons8.com/nolan/64/info-popup.png" class="fa"/><small>Información</small> </a>
+                </li>
+                <li>
+                    <a  class="nav-link py-3 border-bottom" routerLink="planes"><img src="https://img.icons8.com/nolan/64/add-dollar.png" class="fa"/><small>Planes ofertados</small> </a>
+                </li>
+                <li>
+                  <a  class="nav-link py-3 border-bottom" routerLink="notice"><img src="https://img.icons8.com/nolan/64/news.png" class="fa"/><small>Gestionar noticias</small></a>
+              </li>
+
+              </ul>
+	          </li>
+
+            
+              <li class="nav-item"> 
+                <a class="nav-link" routerLink="training"> 
+                  <img src="https://img.icons8.com/nolan/64/exercise.png" class="fa"/>
+                  <small class="texto">Ejercicios</small> 
+                </a> 
+
+                <li> 
+                  <a href="#" class="nav-link" routerLink="challenges">
+                    <img src="https://img.icons8.com/nolan/64/globe.png" class="fa"/>
+                    <small class="texto">Retos</small> 
+                  </a> 
+                </li>
+
+                <li>
+                  <a href="#sub_menu_entrenamiento" data-bs-toggle="collapse" aria-haspopup="true"  aria-expanded="false" class="nav-link" role="button"><img src="https://img.icons8.com/nolan/64/address-book.png" class="fa"/><small class="texto">Entrenamiento</small></a>
+                  <ul class="collapse list-unstyled" id="sub_menu_entrenamiento">
+                    <li>
+                        <a class="nav-link py-3 border-bottom" routerLink="routines"><img src="https://img.icons8.com/nolan/64/contacts.png" class="fa"/><small class="texto">Generales</small></a>
+                    </li>
+                    <li>
+                        <a class="nav-link py-3 border-bottom" routerLink="routines-personal"><img src="https://img.icons8.com/nolan/64/apple-contacts.png" class="fa"/><small class="texto">Personalizados</small></a>
+                    </li>
+                  </ul>
+                </li> 
+                <li> <a style="cursor: pointer;" class="nav-link" routerLink="assessment"><img src="https://img.icons8.com/nolan/64/heart-with-pulse.png" class="fa"/><small class="texto">Valoraciones</small> </a> </li>
+
+                <li> 
+                  <a href="#" class="nav-link" routerLink="see-quotes"> 
+                    <img src="https://img.icons8.com/nolan/64/tear-off-calendar.png" class="fa"/>
+                    <small class="texto">Citas de valoración</small> 
+                  </a> 
+                </li>
+
+                <li>
+                  <a href="#submenu_plans" data-bs-toggle="collapse" aria-haspopup="true"  aria-expanded="false" class="nav-link py-3 text-center border-bottom " role="button"><img src="https://img.icons8.com/nolan/64/food-bar.png" class="fa"/><small class="texto"> Planes de alimentación </small></a>
+                  <ul class="collapse list-unstyled" id="submenu_plans">
+                    <li>
+                        <a  class="nav-link py-3 border-bottom" routerLink="see-nutrition"><img src="https://img.icons8.com/nolan/64/apple.png" class="fa" /><small class="texto"> Generales </small></a>
+                    </li>
+                    
+                    <li>
+                      <a routerLink="nutrition-client" class="nav-link py-3 border-bottom" ><img src="https://img.icons8.com/nolan/64/client-management.png" class="fa" /><small class="texto"> Clientes </small> </a>
+                  </li>
+        
+                  </ul>
+                </li>
+
+
+              </ul>
+              <ul>
+                <div class="footer">
+                  <p>
+                   <small class="nombre">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved.</small></p>
+                </div>
+              </ul>
+              </div>
+
+
+
+
+        <!-- Contenido de la imagen  -->
+      <div id="content" class=" content p-4 p-md-5" >
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-black" >
+          <div class="container-fluid">
+
+            <img src="data:image/png;base64,{{content}}" width="65" height="65"><!-- logo del gimnasio  -->
+
+              <ul class="nav navbar-nav ml-auto">
+
+                <li class="nav-item active">
+                    <a class="nav-link text-white" routerLink="inicio-log">Inicio</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" routerLink="list-notices">Noticias</a>
+                </li>
+
+
+              </ul>
+            </div>
+        </nav>
+        <div class="container-content">
+          
+          <div class="container">
+          
+        </div>
+        
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+
+  </body>
+

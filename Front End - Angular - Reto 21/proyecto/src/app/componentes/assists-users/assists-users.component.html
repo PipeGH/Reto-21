@@ -1,0 +1,255 @@
+<body>
+  <div class="calendario">
+      <div class="row ">
+          <div class="col d-lg-block">
+            <div class="contenedor">
+              <div class="cabecera">
+                  <div class="ver2" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M208.08,0.00 C152.69,67.09 262.02,75.98 200.80,150.00 L0.00,150.00 L0.00,0.00 Z" style="stroke: none; fill: rgb(251, 255, 0);"></path></svg></div>
+                  <h1 class="titulo">Asistencia</h1>
+                  <h1 class="titulo2">Clientes</h1>
+              </div>
+              </div>
+              <div class="col d-lg-block ver">
+                <div class="tabla">
+                <div class="centros">
+                  <input placeholder="Buscar Cliente" type="text" class="buscar" required="" [(ngModel)]="filtro" name="filtro">
+              </div>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Numero de Documento</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let client of listClient | clientes:filtro | paginate: { id: 'client' , itemsPerPage: 10, currentPage: p }">
+
+                    <td scope="row">{{client.documento}}</td>
+                    <td>{{client.nombres + " " + client.primer_apellido + " " + client.segundo_apellido}}</td>
+                    <td>{{client.correo}}</td>
+
+                    <td><a class="ic" (click)="searchUser(client.documento)"><img  class="icono" src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/000000/external-view-delivery-kiranshastry-solid-kiranshastry.png" /></a></td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+
+              <pagination-controls id="client" (pageChange)="handlePageChange($event)" previousLabel="Prev" nextLabel="Next"></pagination-controls>
+            </div>
+            <div class=" row text-center">
+                <div class="col d-lg-block">
+
+
+
+                  <div class="row">
+                
+                            <div class="col">  <!--Lado derecho-->
+                              
+                                <div class="btn-group">
+                                    <div class="btn" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                                      <a class="ic"><img class="icono" src="https://img.icons8.com/ios-filled/100/000000/circled-chevron-left.png"/></a>
+                                    </div>
+                                    <div class="btn" mwlCalendarToday [(viewDate)]="viewDate">
+                                      <a class="ic"><img class="icono" src="https://img.icons8.com/ios-filled/100/000000/today.png" width="150px" height="150px"/></a>
+                                    </div>
+                                    <div class="btn" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" style="background-color: transparent;">
+                                        <a class="ic"><img class="icono" src="https://img.icons8.com/ios-filled/100/000000/circled-chevron-right.png"/></a>
+                                    </div>
+                                
+                            </div>
+                              </div> <!--Aquí termina el lado derecho-->
+
+                              <div class="col"><!--Otro lado :v -->
+                                <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+                                <button class="promedio"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                  <span class="circle" aria-hidden="true">
+                                  <span class="icon arrow"></span>
+                                  </span>
+                                  <span class="button-text">Promedio</span>
+                                </button>
+
+                              </div>
+
+                              <div class="col"><!--Lado izquierdo-->
+                                <div class="btn-group">
+                                  <div class="btn btn-dark" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+                                      Mes
+                                  </div>
+                                  <div class="btn btn-warning" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+                                      Semana
+                                  </div>
+                                  <div class="btn btn-dark btn-dark2" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+                                      Dia
+                                  </div>
+                              </div>
+
+                              </div><!--Aquí termina el lado izquierdo-->
+
+
+                            </div>
+                          </div>
+
+                            <div [ngSwitch]="view">
+                              <mwl-calendar-month-view
+                                *ngSwitchCase="CalendarView.Month"
+                                [viewDate]="viewDate"
+                                [events]="events"
+                                [refresh]="refresh"
+                                [activeDayIsOpen]="activeDayIsOpen"
+                                (dayClicked)="dayClicked($event.day)"
+                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)"
+                              >
+                              </mwl-calendar-month-view>
+                              <mwl-calendar-week-view
+                                *ngSwitchCase="CalendarView.Week"
+                                [viewDate]="viewDate"
+                                [events]="events"
+                                [refresh]="refresh"
+                                [eventSnapSize]="15"
+                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)"
+                              >
+                              </mwl-calendar-week-view>
+                              <mwl-calendar-day-view
+                                *ngSwitchCase="CalendarView.Day"
+                                [viewDate]="viewDate"
+                                [events]="events"
+                                [refresh]="refresh"
+                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)"
+                              >
+                              </mwl-calendar-day-view>
+                            </div>
+
+
+                </div>
+              </div>
+
+
+  </div>
+  </div>
+  </div>
+  </body>
+
+
+  <!-------    Modal de promedio   ------------>
+
+  <!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Asistencia del usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+
+
+        <div class="row">
+
+
+          <div class="col"><!--Lado derecho-->
+
+            <h6 >Datos del usuario:</h6>
+      <div class="modal-footer">
+
+      </div>
+
+            <div *ngFor="let user of oneUser">
+
+        <div class="mb-3">
+          <label for="" class="form-label">Documento:</label>
+          <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" readonly="readonly" value="{{user.documento}}">
+        </div>
+
+        <div class="mb-3">
+          <label for="" class="form-label">Nombre:</label>
+          <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" readonly="readonly" value="{{user.nombres + ' ' + user.primer_apellido + ' ' + user.segundo_apellido}}">
+        </div>
+
+        </div>
+
+
+
+          </div> <!--Aquí termina el lado derecho-->
+
+
+          <div class="col"><!--Lado izquierdo-->
+            <h6>Promedio de un mes:</h6>
+      <div class="modal-footer">
+            </div>
+
+<div class="mb-3">
+        <label for="" class="form-label">Mes:</label>
+        <select class="form-select" name="" id="" [(ngModel)]="Month" (ngModelChange)="selectMonth($event)">
+
+
+          <option *ngFor="let x of month; let i " value="{{x}}">{{x.substring(2,12)}}</option>
+
+        </select>
+      </div>
+
+        <div *ngFor="let days of listDays">
+
+          <div class="mb-3">
+            <label for="" class="form-label">Asistencias en el mes:</label>
+            <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Asistencias en el mes" readonly="readonly" value="{{days.contar}}">
+          </div>
+
+        </div>
+
+        <div *ngFor="let prom of meanOneMonth">
+
+        <div class="mb-3">
+          <label for="" class="form-label">Promedio del mes:</label>
+          <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Promedio de asistencia en el" readonly="readonly" value="{{prom.sum}}">
+        </div>
+
+      </div>
+
+
+    </div><!--Aquí termina el lado izquierdo-->
+      <div class="row d-flex justify-content-centered">
+      <h6>Promedio total:</h6>
+        <div class="modal-footer"></div>
+
+
+ <div *ngFor="let mean of listMean">
+
+  <div class="mb-3">
+    <label for="" class="form-label">Total de asistencias:</label>
+    <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" readonly="readonly" value="{{mean.contar}}">
+  </div>
+
+  <div class="mb-3">
+    <label for="" class="form-label">Promedio en el año actual:</label>
+    <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="" readonly="readonly" value="{{mean.promedio}}">
+  </div>
+
+</div>
+</div>
+
+
+
+
+        </div>
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
